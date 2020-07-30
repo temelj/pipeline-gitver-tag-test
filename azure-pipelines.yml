@@ -6,8 +6,8 @@ trigger:
     - feature/*
 
 pool:
-  #vmImage: 'windows-latest'
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
+  #vmImage: 'ubuntu-latest'
 
 steps:
 - script: echo Hello, world!
