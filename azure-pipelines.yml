@@ -1,0 +1,43 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - feature/*
+
+pool:
+  #vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- checkout: self
+  persistCredentials: true
+  clean: true
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
+    useConfigFile: true
+    configFilePath: 'GitVersion.yml'  
+- pwsh: |
+    Write-Host "Tagging Build: $env:BuildNumber"
+    git config user.name "Azure DevOps"
+    git config user.email "noreply@boq.com.au"
+    git tag
+    git tag $env:BuildNumber
+    Write-Host "called git tag" 
+    git tag
+    git push --follow-tags origin $env:BuildNumber --verbose
+    Write-Host "called git push"
+    git tag
+  env:
+    BuildNumber: $(Build.BuildNumber)
+  condition:
+    and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
