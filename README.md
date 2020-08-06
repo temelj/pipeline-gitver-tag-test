@@ -5,10 +5,10 @@ The implementation is fairly vanilla.
 
 See Reported GitHub issue : https://github.com/actions/virtual-environments/issues/1327
 
-## First comment on github issue 
+# Solution
 https://github.com/actions/virtual-environments/issues/1327#issuecomment-666436552
 
-Could you please add $env:GIT_REDIRECT_STDERR = '2>&1' command at the top of the pwsh task for Windows ?
+Could you please add `$env:GIT_REDIRECT_STDERR = '2>&1'` command at the top of the pwsh task for Windows ?
 
 ```
 $env:GIT_REDIRECT_STDERR = '2>&1'
